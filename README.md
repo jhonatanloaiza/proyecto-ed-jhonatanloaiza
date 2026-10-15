@@ -12,4 +12,24 @@ Un Cubo Geométrico atrapado en una matriz de seguridad de 20 × 20 celdas debe 
 
 ## Estado
 
-Registro del proyecto (7 de octubre de 2026). La especificación y el diseño llegan en la Entrega 1.
+Entrega 1 (14 de octubre de 2026): especificación y diseño en `specs/`.
+
+## Cómo ejecutar
+
+Requisitos: Python 3.11 o superior y `pytest`.
+
+```bash
+python main.py
+```
+
+```bash
+python -m pytest
+```
+
+## Estructura
+
+- `specs/`: artefactos SDD (constitución, historias, MoSCoW, estructuras, specs por componente).
+- `estructuras/`: un módulo por estructura de datos.
+- `dominio/`: lógica del juego.
+- `tests/`: pruebas con pytest.
+- `docs/`: documentos y evidencias.
