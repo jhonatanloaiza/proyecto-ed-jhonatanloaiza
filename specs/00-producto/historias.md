@@ -53,6 +53,9 @@ Formato: *Como* <rol>, *quiero* <acción>, *para* <valor>. Cada criterio de acep
 - **CA-10** Usar una llave junto a una compuerta la abre y elimina la llave del inventario.
 - **CA-11** Soltar un objeto lo elimina del inventario y lo deja en la celda actual del Cubo.
 - **CA-12** Usar o soltar un objeto que no está en el inventario no cambia nada y se informa el error.
+- **CA-41** Usar o soltar un objeto gasta el turno: los Pájaros avanzan y la acción se puede deshacer.
+- **CA-42** Soltar un orbe resta sus puntos, para que recogerlo otra vez no los duplique.
+- **CA-43** Un orbe no se puede usar, ni una llave lejos de una compuerta, ni soltar en una celda con otro objeto: no cambia nada, se informa el motivo y no se gasta el turno.
 
 ## HU-05 · Deshacer una jugada (F-04)
 
@@ -142,3 +145,4 @@ Formato: *Como* <rol>, *quiero* <acción>, *para* <valor>. Cada criterio de acep
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial para la Entrega 1. |
+| 1.1 | 2026-10-30 | Se agregan CA-41 a CA-43: al implementar, HU-04 no decía si usar y soltar gastan turno, qué pasa con los puntos de un orbe soltado ni qué hacen los usos inválidos. |
