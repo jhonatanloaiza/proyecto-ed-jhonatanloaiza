@@ -23,3 +23,4 @@ Mínimo 3 pruebas por operación pública: caso normal, pila vacía y un solo el
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial para la Entrega 1. |
+| 1.1 | 2026-10-30 | Tareas cerradas en la Entrega 2. |

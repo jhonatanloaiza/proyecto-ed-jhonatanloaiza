@@ -35,11 +35,12 @@ Espacio total: O(n) para n acciones guardadas.
 
 ## Diseño de las acciones
 
-Cada acción es un objeto con `hacer(partida)` y `revertir(partida)` y guarda solo lo necesario para revertirse:
+Una `Accion` representa un turno completo y guarda en orden sus **cambios**: pequeños objetos con `hacer(partida)` y `revertir(partida)`, por ejemplo `MoverEntidad`, `SumarPuntos`, `Recoger`, `Soltar`, `ConsumirLlave`, `AbrirCompuerta`, `SumarTurno` y `CambiarEstado`.
 
-- `Mover`: celda anterior del Cubo, celdas anteriores de cada Pájaro y el turno.
-- `Recoger`: el objeto, su celda y los puntos sumados (más el movimiento que la produjo).
-- `Usar` / `Soltar`: el objeto y su posición en el inventario.
+- `hacer` recorre los cambios en orden (`ListaEnlazada`).
+- `revertir` los pasa a una `Pila` y los revierte del último al primero, porque cada cambio depende de los anteriores.
+
+Como los movimientos de los Pájaros son cambios de la misma acción, rehacer repite exactamente lo que ocurrió, sin recalcular rutas.
 
 ## Dónde se usa
 
@@ -49,6 +50,7 @@ Cada acción es un objeto con `hacer(partida)` y `revertir(partida)` y guarda so
 
 - `estructuras/pila.py`: `Nodo`, `Pila`, `PilaVaciaError`.
 - `dominio/historial.py`: `Historial`.
+- `dominio/acciones.py`: `Accion` y los cambios.
 - `tests/test_pila.py`, `tests/test_historial.py`.
 
 ## Historial de cambios
@@ -56,3 +58,4 @@ Cada acción es un objeto con `hacer(partida)` y `revertir(partida)` y guarda so
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial: dos pilas enlazadas; lista doble con cursor descartada. |
+| 1.1 | 2026-10-30 | Las clases `Mover`, `Recoger` y `Usar/Soltar` se reemplazan por una `Accion` compuesta de cambios: un turno mezcla al Cubo y a los Pájaros, y con acciones separadas rehacer no repetiría los movimientos de los enemigos. |
