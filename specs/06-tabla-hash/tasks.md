@@ -2,9 +2,9 @@
 
 | ID | Tarea | Criterios | Estado |
 | --- | --- | --- | --- |
-| T-01 | `insertar`, `buscar`, `contiene`, `tamano` | CA-HAS-01, CA-HAS-02, CA-HAS-06 | Pendiente |
-| T-02 | `eliminar` y colisiones | CA-HAS-03, CA-HAS-04 | Pendiente |
-| T-03 | Crecimiento | CA-HAS-05 | Pendiente |
+| T-01 | `insertar`, `buscar`, `contiene`, `tamano` | CA-HAS-01, CA-HAS-02, CA-HAS-06 | Hecho |
+| T-02 | `eliminar` y colisiones | CA-HAS-03, CA-HAS-04 | Hecho |
+| T-03 | Crecimiento | CA-HAS-05 | Hecho |
 
 ## Historial de cambios
 

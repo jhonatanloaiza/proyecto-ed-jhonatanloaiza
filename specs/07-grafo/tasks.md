@@ -2,9 +2,9 @@
 
 | ID | Tarea | Criterios | Estado |
 | --- | --- | --- | --- |
-| T-01 | `vecinos` | CA-GRA-01 | Pendiente |
-| T-02 | `bfs` con reconstrucción del camino | CA-GRA-02 a CA-GRA-06 | Pendiente |
-| T-03 | `siguiente_paso` | CA-GRA-07 | Pendiente |
+| T-01 | `vecinos` | CA-GRA-01 | Hecho |
+| T-02 | `bfs` con reconstrucción del camino | CA-GRA-02 a CA-GRA-06 | Hecho |
+| T-03 | `siguiente_paso` | CA-GRA-07 | Hecho |
 
 ## Historial de cambios
 

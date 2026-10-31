@@ -2,9 +2,9 @@
 
 | ID | Tarea | Criterios | Estado |
 | --- | --- | --- | --- |
-| T-01 | `encolar`, `desencolar`, `frente` | CA-COL-01, CA-COL-02 | Pendiente |
-| T-02 | Errores en vacío y reutilización | CA-COL-03, CA-COL-04 | Pendiente |
-| T-03 | `tamano` y `esta_vacia` | CA-COL-05 | Pendiente |
+| T-01 | `encolar`, `desencolar`, `frente` | CA-COL-01, CA-COL-02 | Hecho |
+| T-02 | Errores en vacío y reutilización | CA-COL-03, CA-COL-04 | Hecho |
+| T-03 | `tamano` y `esta_vacia` | CA-COL-05 | Hecho |
 
 ## Historial de cambios
 
