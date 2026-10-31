@@ -1,4 +1,4 @@
-# Spec del sistema · versión inicial
+# Spec del sistema · versión 0.2
 
 ## Qué hace el sistema
 
@@ -22,8 +22,9 @@ Escape Geométrico del Sistema Corrupto es un juego por turnos en consola. Un Cu
 | 04 | Turnos | Lista circular | Orden de los turnos | `estructuras/lista_circular.py` |
 | 05 | Eventos | Cola enlazada | Eventos en orden | `estructuras/cola.py`, `dominio/eventos.py` |
 | 06 | Índice | Tabla hash | Búsqueda de entidades | `estructuras/tabla_hash.py` |
-| 07 | Puntajes | Árbol AVL | Tabla de puntajes | `estructuras/avl.py` |
-| 08 | Rutas | Grafo implícito + BFS; A* con montículo | Ruta de los enemigos | `estructuras/grafo.py`, `estructuras/monticulo.py` |
+| 07 | Rutas | Grafo implícito + BFS | Ruta de los enemigos | `estructuras/grafo.py` |
+| 08 | Puntajes (Should, Entrega final) | Árbol AVL | Tabla de puntajes | `estructuras/avl.py` |
+| 09 | Búsqueda guiada (Could, Entrega final) | A* con montículo | Ruta del Cazador | `estructuras/monticulo.py` |
 
 `dominio/partida.py` coordina todos los componentes; `main.py` solo lee comandos y dibuja.
 
@@ -33,10 +34,13 @@ Escape Geométrico del Sistema Corrupto es un juego por turnos en consola. Un Cu
 - Las **acciones** del jugador modifican Mapa, Inventario y puntaje, y se registran en el **Historial**; al revertirse restauran exactamente lo que cambiaron.
 - Las **Rutas** leen el Mapa (sin modificarlo) para calcular el siguiente paso de cada Pájaro.
 - Todo cambio relevante (aparición, recolección, colisión) se encola en **Eventos**.
-- El **Índice** se actualiza cada vez que una entidad cambia de celda, aparece o desaparece.
+- El **Índice** guarda una referencia a cada entidad; como la entidad conserva su propia celda, moverla no obliga a tocar el índice.
+- Una **Accion** es un turno completo (Cubo y Pájaros). El Historial la revierte y la repite sin recalcular rutas.
+- El nivel 1 incluye 1 llave y 1 compuerta opcional para ejercitar `usar` (F-03); el documento de registro lo proponía sin llaves.
 
 ## Historial de cambios
 
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 0.1 | 2026-10-14 | Versión inicial para la Entrega 1. |
+| 0.2 | 2026-10-30 | Numeración alineada con las carpetas de `specs/`; contratos de índice y acción actualizados; nivel 1 con llave y compuerta para ejercitar `usar`. |
