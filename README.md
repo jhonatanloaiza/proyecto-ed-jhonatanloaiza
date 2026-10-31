@@ -12,7 +12,7 @@ Un Cubo Geométrico atrapado en una matriz de seguridad de 20 × 20 celdas debe 
 
 ## Estado
 
-Entrega 1 (14 de octubre de 2026): especificación y diseño en `specs/`.
+Entrega 2: 7 estructuras implementadas e integradas; el juego se puede jugar completo por consola. Ver `ANALISIS.md` y `specs/trazabilidad.md`.
 
 ## Cómo ejecutar
 
@@ -25,6 +25,21 @@ python main.py
 ```bash
 python -m pytest
 ```
+
+## Cómo jugar
+
+Elige `1` en el menú. Llega al portal `@` sin que te atrape un Pájaro `V`.
+
+| Comando | Acción |
+| --- | --- |
+| `w` `a` `s` `d` | mover arriba, izquierda, abajo, derecha |
+| `e` | esperar |
+| `i` | ver el inventario |
+| `u ID` | usar un objeto (por ejemplo `u k1`) |
+| `x ID` | soltar un objeto |
+| `b ID` | buscar una entidad (por ejemplo `b r1`) |
+| `z` / `y` | deshacer / rehacer |
+| `r` / `q` | reiniciar / salir |
 
 ## Estructura
 
