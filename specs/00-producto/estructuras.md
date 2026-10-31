@@ -17,9 +17,11 @@ Una fila por capacidad del dominio. Todas las estructuras se implementan desde c
 
 - La matriz usa internamente un arreglo de Python de tamaño fijo creado una sola vez (acceso por índice); no se usan operaciones de lista como sustituto de otra estructura.
 - El montículo y la tabla hash usan un arreglo de tamaño fijo como almacenamiento de cubetas y posiciones, como permite el enunciado.
+- `main.py` arma con listas de Python las líneas de texto que imprime. Es formato de salida temporal y no sustituye a ninguna estructura declarada.
 
 ## Historial de cambios
 
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial para la Entrega 1. |
+| 1.1 | 2026-10-30 | Se declara el uso de listas en la salida de consola. Sin cambios de decisión. |

@@ -54,8 +54,23 @@ Todas las Must corresponden a los elementos mínimos de la Temática A, que son 
 | Música y efectos con librerías de audio | Las únicas dependencias permitidas son `pytest` y `matplotlib`. |
 | Modo multijugador | Cambia el modelo de turnos y no lo pide la temática. |
 
+## Actualización de la Entrega 2
+
+| HU | Cambio | Motivo |
+| --- | --- | --- |
+| HU-01 a HU-11 | Implementadas | Son los Must; quedan integradas y accesibles desde `main.py`. |
+| HU-04 | Crece con CA-41 a CA-43 | Faltaba definir el costo en turnos y los usos inválidos. |
+| HU-15 | Sigue en Could, con un ajuste | El nivel 1 ahora trae 1 llave y 1 compuerta para que `usar` se pueda ejercitar con un solo nivel. |
+| HU-12, HU-13 | Siguen en Should | Pasan a la Entrega final. |
+| HU-14 | Sigue en Could | Pasa a la Entrega final. |
+
+Capacidad restante hasta el 11 de noviembre: 2 semanas × 8 h = 16 h. Should y Could suman 11 h, además de `ANALISIS.md` final, el informe y la preparación de la sustentación.
+
+La Entrega 2 se sube después del 28 de octubre, así que aplica la política de entregas tardías.
+
 ## Historial de cambios
 
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial para la Entrega 1. |
+| 1.1 | 2026-10-30 | Actualización de la Entrega 2: qué cambió y capacidad restante. |
