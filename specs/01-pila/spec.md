@@ -1,7 +1,7 @@
 # Spec · Componente 01: Pila e Historial de acciones
 
 - **Historias que soporta:** HU-05 Deshacer una jugada (Must), HU-06 Rehacer una jugada (Must)
-- **Versión:** 1.0
+- **Versión:** 1.1
 
 ## Propósito
 
@@ -51,9 +51,11 @@ Registra acciones del jugador. Cada acción sabe aplicarse (`hacer`) y revertirs
 
 - Límite de acciones guardadas (no lo pide ninguna historia).
 - Deshacer acciones de los enemigos por separado: sus movimientos forman parte de la acción del turno del jugador.
+- Volver a mostrar eventos al deshacer o rehacer.
 
 ## Historial de cambios
 
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial para la Entrega 1. |
+| 1.1 | 2026-10-30 | Rehacer repite la acción sin regenerar eventos: los eventos ya se mostraron en su turno. |
