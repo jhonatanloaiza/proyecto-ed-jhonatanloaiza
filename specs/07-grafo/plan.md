@@ -6,6 +6,12 @@
 
 Todas las aristas cuestan 1, por lo que BFS garantiza el camino de menos pasos.
 
+## A* (versión 1.1)
+
+`a_estrella` usa el `MonticuloMinimo` del componente 09 como frontera, ordenado por `(g + h, h)`, una `Matriz` con el costo g de cada celda y otra con las celdas cerradas.
+
+**Heurística: distancia Manhattan,** `|f1 − f2| + |c1 − c2|`. Es **admisible**: con movimientos en 4 direcciones de costo 1, ninguna ruta puede ser más corta que esa distancia, así que nunca sobrestima. También es **consistente**, porque cambia como máximo en 1 entre celdas vecinas. Por eso A* devuelve el camino óptimo sin reabrir celdas cerradas. Desempatar por h prefiere las celdas más cercanas al destino y reduce la exploración.
+
 ## Complejidad
 
 V son las celdas y E ≤ 4V.
@@ -14,13 +20,14 @@ V son las celdas y E ≤ 4V.
 | --- | --- | --- |
 | `vecinos` | O(1) | máximo 4 consultas |
 | `bfs`, `siguiente_paso` | O(V + E) = O(V) | cada celda se encola una sola vez |
+| `a_estrella` | O(E log V) = O(V log V) | cada mejora de costo inserta en el montículo; en la práctica explora menos celdas que BFS |
 
 Espacio: O(V).
 
 ## Alternativas descartadas
 
 - **Lista de adyacencia explícita:** duplica la información del mapa y hay que actualizarla cuando se abre una compuerta.
-- **A\*:** queda para HU-14 (Could). Explora menos celdas, pero necesita el montículo.
+- **A\* para todos los Pájaros:** en un mapa de 400 celdas BFS ya es rápido, y su código es más simple de verificar. A* se reserva para el Cazador, lo que permite comparar ambas búsquedas en el mismo mapa.
 
 ## Dónde se usa
 
@@ -31,3 +38,4 @@ Espacio: O(V).
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-30 | Versión inicial para la Entrega 2. |
+| 1.1 | 2026-11-13 | Se agrega A* con heurística Manhattan para HU-14. |
