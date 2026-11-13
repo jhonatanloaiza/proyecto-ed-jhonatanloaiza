@@ -68,9 +68,21 @@ Capacidad restante hasta el 11 de noviembre: 2 semanas × 8 h = 16 h. Should y C
 
 La Entrega 2 se sube después del 28 de octubre, así que aplica la política de entregas tardías.
 
+## Actualización de la Entrega final
+
+| HU | Cambio | Motivo |
+| --- | --- | --- |
+| HU-12 | Implementada | Puntajes en un AVL; se muestran desde el menú. |
+| HU-13 | Implementada | El Centinela aparece al recoger una llave en los niveles 2 y 3. |
+| HU-14 | Implementada | El Cazador usa A*; el comando `c` compara BFS y A*. |
+| HU-15 | Implementada | Tres niveles: Sector de Arranque, Memoria Fragmentada y Núcleo Corrupto. |
+
+Las 15 historias quedaron terminadas. Los 4 Won't se mantienen. La entrega final se sube después del 11 de noviembre, así que aplica la política de entregas tardías.
+
 ## Historial de cambios
 
 | Versión | Fecha | Cambio |
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial para la Entrega 1. |
 | 1.1 | 2026-10-30 | Actualización de la Entrega 2: qué cambió y capacidad restante. |
+| 1.2 | 2026-11-13 | Actualización de la Entrega final: Should y Could implementados. |

@@ -25,3 +25,4 @@ Una fila por capacidad del dominio. Todas las estructuras se implementan desde c
 | --- | --- | --- |
 | 1.0 | 2026-10-14 | Versión inicial para la Entrega 1. |
 | 1.1 | 2026-10-30 | Se declara el uso de listas en la salida de consola. Sin cambios de decisión. |
+| 1.2 | 2026-11-13 | Sin cambios de decisión: AVL y montículo se implementaron como estaba previsto; la comparación medida está en `ANALISIS.md`. |
