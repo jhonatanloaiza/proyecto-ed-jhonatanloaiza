@@ -1,5 +1,7 @@
 """Pruebas del GrafoRejilla (componente 07)."""
 
+import random
+
 from estructuras.grafo import GrafoRejilla
 
 
@@ -81,3 +83,83 @@ def test_siguiente_paso_ya_llego():
 def test_siguiente_paso_sin_camino():
     """CA-GRA-07: devuelve None si no hay camino."""
     assert grafo_de(".^.").siguiente_paso((0, 0), (0, 2)) is None
+
+
+def test_a_estrella_misma_longitud_que_bfs():
+    """CA-GRA-08: A* devuelve un camino de la misma longitud que BFS."""
+    grafo = grafo_de(".....", ".^^^.", ".^...", ".^.^.", "...^.")
+    assert grafo.a_estrella((0, 0), (4, 4)).camino.tamano() == grafo.bfs((0, 0), (4, 4)).camino.tamano()
+
+
+def test_a_estrella_camino_contiguo_y_transitable():
+    """CA-GRA-08: cada paso de A* va a una celda contigua y transitable, de origen a destino."""
+    plano = (".^...", ".^.^.", "...^.")
+    camino = list(grafo_de(*plano).a_estrella((0, 0), (2, 4)).camino)
+    assert camino[0] == (0, 0) and camino[-1] == (2, 4)
+    assert all(abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1 for a, b in zip(camino, camino[1:]))
+    assert all(plano[f][c] != "^" for f, c in camino)
+
+
+def plano_al_azar(azar, lado, proporcion):
+    return ["".join("^" if azar.random() < proporcion else "." for _ in range(lado)) for _ in range(lado)]
+
+
+def test_a_estrella_igual_que_bfs_en_mapas_aleatorios():
+    """CA-GRA-08: en 100 mapas aleatorios A* y BFS encuentran caminos de igual longitud."""
+    azar = random.Random(7)
+    for _ in range(100):
+        plano = plano_al_azar(azar, 12, 0.3)
+        plano[0] = "." + plano[0][1:]
+        plano[11] = plano[11][:11] + "."
+        grafo = grafo_de(*plano)
+        assert grafo.a_estrella((0, 0), (11, 11)).camino.tamano() == grafo.bfs((0, 0), (11, 11)).camino.tamano()
+
+
+def test_a_estrella_explora_menos_en_campo_abierto():
+    """CA-GRA-09: sin obstáculos A* explora mucho menos que BFS."""
+    grafo = grafo_de(*["." * 20] * 20)
+    assert grafo.a_estrella((0, 0), (19, 19)).explorados < grafo.bfs((0, 0), (19, 19)).explorados
+
+
+def test_a_estrella_nunca_explora_mas_que_bfs():
+    """CA-GRA-09: en el mismo mapa A* explora como máximo tantas celdas como BFS."""
+    azar = random.Random(3)
+    for _ in range(100):
+        grafo = grafo_de(*plano_al_azar(azar, 15, 0.25))
+        assert grafo.a_estrella((7, 7), (0, 14)).explorados <= grafo.bfs((7, 7), (0, 14)).explorados
+
+
+def test_a_estrella_sin_camino_explora_igual():
+    """CA-GRA-09: sin camino, ambas búsquedas recorren la misma región."""
+    grafo = grafo_de(".^.", ".^.")
+    assert grafo.a_estrella((0, 0), (0, 2)).explorados == grafo.bfs((0, 0), (0, 2)).explorados == 2
+
+
+def test_a_estrella_sin_camino():
+    """CA-GRA-10: si no hay camino, A* devuelve el camino vacío."""
+    assert grafo_de(".^.", ".^.").a_estrella((0, 0), (0, 2)).camino.esta_vacia()
+
+
+def test_a_estrella_origen_igual_a_destino():
+    """CA-GRA-10: si origen y destino coinciden, el camino tiene solo esa celda."""
+    assert list(grafo_de("..").a_estrella((0, 1), (0, 1)).camino) == [(0, 1)]
+
+
+def test_a_estrella_destino_encerrado():
+    """CA-GRA-10: un destino rodeado de picos no tiene camino."""
+    assert grafo_de("...", ".^.", "^.^").a_estrella((0, 0), (2, 1)).camino.esta_vacia()
+
+
+def test_siguiente_paso_guiado():
+    """CA-GRA-11: con guiado=True devuelve la primera celda del camino de A*."""
+    assert grafo_de("...").siguiente_paso((0, 0), (0, 2), guiado=True) == (0, 1)
+
+
+def test_siguiente_paso_guiado_sin_camino():
+    """CA-GRA-11: con guiado=True devuelve None si no hay camino."""
+    assert grafo_de(".^.").siguiente_paso((0, 0), (0, 2), guiado=True) is None
+
+
+def test_siguiente_paso_guiado_ya_llego():
+    """CA-GRA-11: con guiado=True devuelve None si ya está en el destino."""
+    assert grafo_de("..").siguiente_paso((0, 0), (0, 0), guiado=True) is None
