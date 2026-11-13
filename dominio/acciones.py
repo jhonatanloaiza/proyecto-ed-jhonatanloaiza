@@ -105,6 +105,22 @@ class AbrirCompuerta:
         partida.mapa.poner_terreno(self._celda, COMPUERTA)
 
 
+class AparecerEnemigo:
+    """Un enemigo entra al mapa, al orden de turnos y al índice; se mueve desde el turno siguiente."""
+
+    def __init__(self, enemigo):
+        self._enemigo = enemigo
+
+    def hacer(self, partida):
+        self._enemigo.desde_turno = partida.turno + 1
+        partida.enemigos.insertar(self._enemigo)
+        partida.indice.insertar(self._enemigo.id, self._enemigo)
+
+    def revertir(self, partida):
+        partida.enemigos.quitar(self._enemigo)
+        partida.indice.eliminar(self._enemigo.id)
+
+
 class Accion:
     """Todos los cambios de un turno, en el orden en que ocurrieron."""
 

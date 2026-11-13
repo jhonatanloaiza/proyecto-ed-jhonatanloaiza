@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 CUBO = "Cubo Geométrico"
 RASTREADOR = "Pájaro Rastreador"
+CENTINELA = "Pájaro Centinela"
+CAZADOR = "Pájaro Cazador"
 ORBE = "Orbe de energía"
 LLAVE = "Llave geométrica"
 
@@ -16,3 +18,4 @@ class Entidad:
     tipo: str
     celda: tuple | None
     puntos: int = 0
+    desde_turno: int = 0  # un enemigo se mueve solo a partir de este turno

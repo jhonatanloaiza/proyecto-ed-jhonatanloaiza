@@ -3,6 +3,7 @@
 from dominio.acciones import (
     AbrirCompuerta,
     Accion,
+    AparecerEnemigo,
     CambiarEstado,
     ConsumirLlave,
     MoverEntidad,
@@ -11,7 +12,7 @@ from dominio.acciones import (
     SumarPuntos,
     SumarTurno,
 )
-from dominio.entidades import CUBO, LLAVE, ORBE, RASTREADOR, Entidad
+from dominio.entidades import CAZADOR, CENTINELA, CUBO, LLAVE, ORBE, RASTREADOR, Entidad
 from dominio.eventos import APARICION, COLISION, RECOLECCION, Evento
 from dominio.historial import Historial
 from dominio.inventario import Inventario
@@ -37,7 +38,8 @@ PARTIDA_TERMINADA = "La partida terminó: solo puedes deshacer, reiniciar o sali
 
 
 class Partida:
-    def __init__(self, plano=SECTOR_DE_ARRANQUE):
+    def __init__(self, plano=SECTOR_DE_ARRANQUE, nombre="Sector de Arranque"):
+        self.nombre = nombre
         self.turno = 0
         self.puntaje = 0
         self.estado = EN_JUEGO
@@ -48,11 +50,12 @@ class Partida:
         self.indice = TablaHash()
         self.historial = Historial()
         self.cubo = None
+        self._centinelas = ListaEnlazada()  # esperan a que el Cubo recoja una llave
         self._cargar(plano)
-        self._grafo = GrafoRejilla(self.mapa.filas(), self.mapa.columnas(), self.mapa.es_transitable)
+        self.grafo = GrafoRejilla(self.mapa.filas(), self.mapa.columnas(), self.mapa.es_transitable)
 
     def mover(self, direccion):
-        """Mueve el Cubo una casilla y resuelve el turno. O(k × V) para k enemigos."""
+        """Mueve el Cubo una casilla y resuelve el turno. O(k × V log V) para k enemigos."""
         if self.estado != EN_JUEGO:
             return PARTIDA_TERMINADA
         destino = (self.cubo.celda[0] + direccion[0], self.cubo.celda[1] + direccion[1])
@@ -72,14 +75,14 @@ class Partida:
         return "Movimiento realizado."
 
     def esperar(self):
-        """Pasa el turno sin mover el Cubo. O(k × V) para k enemigos."""
+        """Pasa el turno sin mover el Cubo. O(k × V log V) para k enemigos."""
         if self.estado != EN_JUEGO:
             return PARTIDA_TERMINADA
         self._cerrar_turno(self._nueva_accion())
         return "El Cubo espera."
 
     def usar(self, identificador):
-        """Usa una llave junto a una compuerta. O(n + k × V)."""
+        """Usa una llave junto a una compuerta. O(n + k × V log V)."""
         if self.estado != EN_JUEGO:
             return PARTIDA_TERMINADA
         objeto = self.inventario.buscar(identificador)
@@ -97,7 +100,7 @@ class Partida:
         return "Compuerta abierta."
 
     def soltar(self, identificador):
-        """Deja un objeto en la celda del Cubo. O(n + k × V)."""
+        """Deja un objeto en la celda del Cubo. O(n + k × V log V)."""
         if self.estado != EN_JUEGO:
             return PARTIDA_TERMINADA
         objeto = self.inventario.buscar(identificador)
@@ -133,6 +136,23 @@ class Partida:
             return f"{identificador}: {entidad.tipo}, en el inventario."
         return f"{identificador}: {entidad.tipo}, en {entidad.celda}."
 
+    def comparar_busquedas(self):
+        """Para cada Pájaro, celdas exploradas por BFS y por A* hacia el Cubo. O(k × V log V)."""
+        filas = ListaEnlazada()
+        for pajaro in self.enemigos:
+            bfs = self.grafo.bfs(pajaro.celda, self.cubo.celda)
+            guiada = self.grafo.a_estrella(pajaro.celda, self.cubo.celda)
+            pasos = max(bfs.camino.tamano() - 1, 0)
+            filas.agregar((pajaro.id, pasos, bfs.explorados, guiada.explorados))
+        return filas
+
+    def hay_pajaro_en(self, celda):
+        """Indica si algún enemigo activo está en la celda. O(k)."""
+        for pajaro in self.enemigos:
+            if pajaro.celda == celda:
+                return True
+        return False
+
     def drenar_eventos(self):
         """Saca los eventos pendientes en orden y devuelve sus textos. O(e) para e eventos."""
         textos = ListaEnlazada()
@@ -141,29 +161,38 @@ class Partida:
         return textos
 
     def _cargar(self, plano):
-        orbes = llaves = rastreadores = 0
+        contadores = TablaHash()
         for fila, linea in enumerate(plano):
             for columna, simbolo in enumerate(linea):
                 celda = (fila, columna)
                 if simbolo == "C":
                     self.cubo = Entidad("C", CUBO, celda)
                     self._registrar(self.cubo)
-                elif simbolo == "R":
-                    rastreadores += 1
-                    pajaro = Entidad(f"R{rastreadores}", RASTREADOR, celda)
+                elif simbolo in ("R", "H"):
+                    tipo = RASTREADOR if simbolo == "R" else CAZADOR
+                    pajaro = Entidad(self._nuevo_id(contadores, simbolo), tipo, celda)
                     self.enemigos.insertar(pajaro)
                     self._registrar(pajaro)
+                elif simbolo == "S":
+                    self._centinelas.agregar(Entidad(self._nuevo_id(contadores, "S"), CENTINELA, celda))
                 elif simbolo == "o":
-                    orbes += 1
-                    self._colocar(Entidad(f"O{orbes}", ORBE, celda, PUNTOS_ORBE))
+                    self._colocar(Entidad(self._nuevo_id(contadores, "O"), ORBE, celda, PUNTOS_ORBE))
                 elif simbolo == "k":
-                    llaves += 1
-                    self._colocar(Entidad(f"K{llaves}", LLAVE, celda))
+                    self._colocar(Entidad(self._nuevo_id(contadores, "K"), LLAVE, celda))
                 elif simbolo in (PICO, COMPUERTA, PORTAL):
                     self.mapa.poner_terreno(celda, simbolo)
 
+    @staticmethod
+    def _nuevo_id(contadores, letra):
+        numero = (contadores.buscar(letra) or 0) + 1
+        contadores.insertar(letra, numero)
+        return f"{letra}{numero}"
+
     def _registrar(self, entidad):
         self.indice.insertar(entidad.id, entidad)
+        self._anunciar(entidad)
+
+    def _anunciar(self, entidad):
         self.eventos.encolar(Evento(APARICION, self.turno, entidad.celda, f"Aparece {entidad.id}"))
 
     def _colocar(self, objeto):
@@ -180,6 +209,17 @@ class Partida:
         if objeto.puntos:
             accion.ejecutar(SumarPuntos(objeto.puntos), self)
         self.eventos.encolar(Evento(RECOLECCION, self.turno, celda, f"Recogiste {objeto.id}"))
+        if objeto.tipo == LLAVE:
+            self._despertar_centinela(accion)
+
+    def _despertar_centinela(self, accion):
+        for centinela in self._centinelas:
+            dormido = not self.indice.contiene(centinela.id)
+            libre = centinela.celda != self.cubo.celda and not self.hay_pajaro_en(centinela.celda)
+            if dormido and libre:
+                accion.ejecutar(AparecerEnemigo(centinela), self)
+                self._anunciar(centinela)
+                return
 
     def _cerrar_turno(self, accion):
         self._revisar_fin(accion)
@@ -191,15 +231,12 @@ class Partida:
     def _mover_enemigos(self, accion):
         for _ in range(self.enemigos.tamano()):
             pajaro = self.enemigos.siguiente()
-            paso = self._grafo.siguiente_paso(pajaro.celda, self.cubo.celda)
+            if pajaro.desde_turno > self.turno:
+                continue  # el Centinela recién aparecido espera un turno
+            guiado = pajaro.tipo == CAZADOR
+            paso = self.grafo.siguiente_paso(pajaro.celda, self.cubo.celda, guiado)
             if paso is not None and not self.hay_pajaro_en(paso):
                 accion.ejecutar(MoverEntidad(pajaro, pajaro.celda, paso), self)
-
-    def hay_pajaro_en(self, celda):
-        for pajaro in self.enemigos:
-            if pajaro.celda == celda:
-                return True
-        return False
 
     def _revisar_fin(self, accion):
         celda = self.cubo.celda
