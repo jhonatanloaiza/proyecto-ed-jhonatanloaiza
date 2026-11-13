@@ -5,7 +5,7 @@
 | T-01 | `vecinos` | CA-GRA-01 | Hecho |
 | T-02 | `bfs` con reconstrucción del camino | CA-GRA-02 a CA-GRA-06 | Hecho |
 | T-03 | `siguiente_paso` | CA-GRA-07 | Hecho |
-| T-04 | `a_estrella` con montículo y `siguiente_paso(guiado=True)` | CA-GRA-08 a CA-GRA-11 | Pendiente |
+| T-04 | `a_estrella` con montículo y `siguiente_paso(guiado=True)` | CA-GRA-08 a CA-GRA-11 | Hecho |
 
 ## Historial de cambios
 
