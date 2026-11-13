@@ -1,6 +1,6 @@
 # Trazabilidad criterio ↔ prueba ↔ código
 
-Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) aún no tienen prueba: se implementan en la Entrega final.
+Generada a partir de los docstrings de `tests/`. Los 112 criterios definidos en `specs/` tienen al menos una prueba.
 
 ## De criterio a prueba y código
 
@@ -32,15 +32,29 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | CA-24 | `test_partida.py::test_eventos_en_orden` | `dominio/partida.py` |
 | CA-25 | `test_partida.py::test_turno_sin_eventos` | `dominio/partida.py` |
 | CA-26 | `test_partida.py::test_victoria_en_el_portal`<br>`test_partida.py::test_nivel_se_puede_ganar_por_el_camino_corto` | `dominio/partida.py` |
-| CA-27 | `test_partida.py::test_derrota_si_el_pajaro_llega`<br>`test_partida.py::test_derrota_si_el_cubo_entra_a_la_celda_del_pajaro`<br>`test_partida.py::test_nivel_esperar_lleva_a_la_derrota` | `dominio/partida.py` |
+| CA-27 | `test_partida.py::test_derrota_si_el_pajaro_llega`<br>`test_partida.py::test_derrota_si_el_cubo_entra_a_la_celda_del_pajaro`<br>`test_partida.py::test_nivel_esperar_lleva_a_la_derrota`<br>`test_partida.py::test_niveles_esperar_lleva_a_la_derrota` | `dominio/partida.py` |
 | CA-28 | `test_partida.py::test_esperar_con_partida_terminada`<br>`test_partida.py::test_partida_terminada_no_acepta_movimientos`<br>`test_partida.py::test_partida_terminada_permite_deshacer` | `dominio/partida.py` |
 | CA-29 | `test_partida.py::test_buscar_entidad_existente`<br>`test_partida.py::test_buscar_objeto_en_inventario` | `dominio/partida.py` |
 | CA-30 | `test_partida.py::test_buscar_inexistente` | `dominio/partida.py` |
-| CA-31 | `test_main.py::test_dibujar_un_simbolo_por_elemento`<br>`test_main.py::test_dibujar_muestra_turno_puntaje_e_inventario`<br>`test_main.py::test_dibujar_con_color`<br>`test_main.py::test_comandos_ejercitan_el_juego` | `main.py` |
+| CA-31 | `test_main.py::test_dibujar_un_simbolo_por_elemento`<br>`test_main.py::test_dibujar_muestra_turno_puntaje_e_inventario`<br>`test_main.py::test_dibujar_con_color`<br>`test_main.py::test_comandos_ejercitan_el_juego`<br>`test_main.py::test_dibujar_centinela_y_cazador` | `main.py` |
 | CA-32 | `test_main.py::test_menu_muestra_opciones`<br>`test_main.py::test_salir_devuelve_none`<br>`test_main.py::test_opcion_invalida`<br>`test_main.py::test_comando_no_reconocido`<br>`test_main.py::test_comando_vacio`<br>`test_main.py::test_comando_sin_identificador` | `main.py` |
+| CA-33 | `test_main.py::test_registrar_partida_terminada`<br>`test_main.py::test_no_registrar_partida_en_juego` | `main.py` |
+| CA-34 | `test_main.py::test_puntajes_sin_partidas`<br>`test_main.py::test_puntajes_de_mayor_a_menor` | `main.py` |
+| CA-35 | `test_partida.py::test_centinela_aparece_al_recoger_llave`<br>`test_partida.py::test_centinela_se_mueve_desde_el_turno_siguiente`<br>`test_partida.py::test_centinela_aparece_una_sola_vez` | `dominio/partida.py` |
+| CA-36 | `test_partida.py::test_deshacer_recogida_quita_al_centinela`<br>`test_partida.py::test_rehacer_recogida_devuelve_al_centinela` | `dominio/partida.py` |
+| CA-37 | `test_partida.py::test_cazador_usa_camino_mas_corto` | `dominio/partida.py` |
+| CA-38 | `test_main.py::test_comando_comparar`<br>`test_partida.py::test_comparar_busquedas_bfs_contra_a_estrella`<br>`test_partida.py::test_comparar_busquedas_sin_pajaros` | `dominio/partida.py`, `main.py` |
+| CA-39 | `test_main.py::test_elegir_nivel_valido`<br>`test_main.py::test_elegir_nivel_lista_los_tres`<br>`test_main.py::test_partida_usa_el_nivel_elegido`<br>`test_partida.py::test_nivel_2_se_puede_ganar`<br>`test_partida.py::test_nivel_3_se_puede_ganar`<br>`test_partida.py::test_niveles_cumplen_los_minimos` | `dominio/partida.py`, `main.py` |
+| CA-40 | `test_main.py::test_elegir_nivel_inexistente`<br>`test_main.py::test_elegir_nivel_texto`<br>`test_main.py::test_elegir_nivel_vacio` | `main.py` |
 | CA-41 | `test_partida.py::test_soltar_gasta_turno_y_se_puede_deshacer`<br>`test_partida.py::test_deshacer_llave_cierra_la_compuerta` | `dominio/partida.py` |
 | CA-42 | `test_partida.py::test_soltar_orbe_resta_puntos` | `dominio/partida.py` |
 | CA-43 | `test_partida.py::test_soltar_en_celda_ocupada`<br>`test_partida.py::test_usar_orbe_no_cambia_nada`<br>`test_partida.py::test_usar_llave_lejos_de_compuerta` | `dominio/partida.py` |
+| CA-AVL-01 | `test_avl.py::test_insertar_desordenado_queda_ordenado`<br>`test_avl.py::test_insertar_un_elemento` | `estructuras/avl.py` |
+| CA-AVL-02 | `test_avl.py::test_insertar_ordenado_mantiene_altura_logaritmica` | `estructuras/avl.py` |
+| CA-AVL-03 | `test_avl.py::test_rotaciones_dejan_el_arbol_balanceado`<br>`test_avl.py::test_rotaciones_en_arbol_grande`<br>`test_avl.py::test_altura_tres_elementos` | `estructuras/avl.py` |
+| CA-AVL-04 | `test_avl.py::test_insertar_clave_existente_reemplaza`<br>`test_avl.py::test_insertar_clave_existente_en_arbol_de_uno`<br>`test_avl.py::test_insertar_claves_compuestas`<br>`test_avl.py::test_tamano_varios`<br>`test_avl.py::test_esta_vacia_tras_reemplazar` | `estructuras/avl.py` |
+| CA-AVL-05 | `test_avl.py::test_maximo`<br>`test_avl.py::test_maximo_un_elemento`<br>`test_avl.py::test_maximo_vacio_lanza_error` | `estructuras/avl.py` |
+| CA-AVL-06 | `test_avl.py::test_descendente_vacio`<br>`test_avl.py::test_altura_vacio`<br>`test_avl.py::test_altura_un_elemento`<br>`test_avl.py::test_tamano_vacio`<br>`test_avl.py::test_tamano_un_elemento`<br>`test_avl.py::test_esta_vacia_nuevo`<br>`test_avl.py::test_esta_vacia_con_elemento` | `estructuras/avl.py` |
 | CA-CIR-01 | `test_lista_circular.py::test_siguiente_vuelve_al_primero` | `estructuras/lista_circular.py` |
 | CA-CIR-02 | `test_lista_circular.py::test_siguiente_un_elemento` | `estructuras/lista_circular.py` |
 | CA-CIR-03 | `test_lista_circular.py::test_siguiente_vacia_lanza_error` | `estructuras/lista_circular.py` |
@@ -61,6 +75,10 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | CA-GRA-05 | `test_grafo.py::test_bfs_origen_igual_a_destino` | `estructuras/grafo.py` |
 | CA-GRA-06 | `test_grafo.py::test_explorados_origen_igual_a_destino`<br>`test_grafo.py::test_explorados_sin_camino_cuenta_la_region`<br>`test_grafo.py::test_explorados_no_repite_celdas` | `estructuras/grafo.py` |
 | CA-GRA-07 | `test_grafo.py::test_siguiente_paso_primer_paso`<br>`test_grafo.py::test_siguiente_paso_ya_llego`<br>`test_grafo.py::test_siguiente_paso_sin_camino` | `estructuras/grafo.py` |
+| CA-GRA-08 | `test_grafo.py::test_a_estrella_misma_longitud_que_bfs`<br>`test_grafo.py::test_a_estrella_camino_contiguo_y_transitable`<br>`test_grafo.py::test_a_estrella_igual_que_bfs_en_mapas_aleatorios` | `estructuras/grafo.py` |
+| CA-GRA-09 | `test_grafo.py::test_a_estrella_explora_menos_en_campo_abierto`<br>`test_grafo.py::test_a_estrella_nunca_explora_mas_que_bfs`<br>`test_grafo.py::test_a_estrella_sin_camino_explora_igual` | `estructuras/grafo.py` |
+| CA-GRA-10 | `test_grafo.py::test_a_estrella_sin_camino`<br>`test_grafo.py::test_a_estrella_origen_igual_a_destino`<br>`test_grafo.py::test_a_estrella_destino_encerrado` | `estructuras/grafo.py` |
+| CA-GRA-11 | `test_grafo.py::test_siguiente_paso_guiado`<br>`test_grafo.py::test_siguiente_paso_guiado_sin_camino`<br>`test_grafo.py::test_siguiente_paso_guiado_ya_llego` | `estructuras/grafo.py` |
 | CA-HAS-01 | `test_tabla_hash.py::test_insertar_y_buscar`<br>`test_tabla_hash.py::test_insertar_varias_claves` | `estructuras/tabla_hash.py` |
 | CA-HAS-02 | `test_tabla_hash.py::test_insertar_clave_existente_reemplaza` | `estructuras/tabla_hash.py` |
 | CA-HAS-03 | `test_tabla_hash.py::test_buscar_inexistente`<br>`test_tabla_hash.py::test_buscar_en_tabla_vacia`<br>`test_tabla_hash.py::test_eliminar_inexistente`<br>`test_tabla_hash.py::test_eliminar_en_tabla_vacia` | `estructuras/tabla_hash.py` |
@@ -87,16 +105,45 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | CA-MAT-04 | `test_matriz.py::test_dentro_esquinas`<br>`test_matriz.py::test_dentro_justo_afuera` | `estructuras/matriz.py` |
 | CA-MAT-05 | `test_matriz.py::test_crear_tamano_invalido` | `estructuras/matriz.py` |
 | CA-MAT-06 | `test_matriz.py::test_dimensiones_no_cuadrada`<br>`test_matriz.py::test_dimensiones_uno_por_uno`<br>`test_matriz.py::test_dimensiones_del_juego` | `estructuras/matriz.py` |
+| CA-MON-01 | `test_monticulo.py::test_insertar_desordenado`<br>`test_monticulo.py::test_insertar_en_orden_decreciente`<br>`test_monticulo.py::test_insertar_un_elemento`<br>`test_monticulo.py::test_prioridades_compuestas` | `estructuras/monticulo.py` |
+| CA-MON-02 | `test_monticulo.py::test_empates_en_orden_de_llegada`<br>`test_monticulo.py::test_empates_mezclados` | `estructuras/monticulo.py` |
+| CA-MON-03 | `test_monticulo.py::test_minimo_no_quita`<br>`test_monticulo.py::test_minimo_un_elemento` | `estructuras/monticulo.py` |
+| CA-MON-04 | `test_monticulo.py::test_extraer_vacio_lanza_error`<br>`test_monticulo.py::test_minimo_vacio_lanza_error` | `estructuras/monticulo.py` |
+| CA-MON-05 | `test_monticulo.py::test_extraer_hasta_vaciar_y_reutilizar`<br>`test_monticulo.py::test_tamano_vacio`<br>`test_monticulo.py::test_tamano_tras_extraer`<br>`test_monticulo.py::test_tamano_con_repetidos`<br>`test_monticulo.py::test_esta_vacia_nuevo`<br>`test_monticulo.py::test_esta_vacia_con_elemento`<br>`test_monticulo.py::test_esta_vacia_tras_extraer` | `estructuras/monticulo.py` |
 | CA-PIL-01 | `test_pila.py::test_pila_con_elemento_no_esta_vacia`<br>`test_pila.py::test_apilar_deja_el_valor_en_la_cima`<br>`test_pila.py::test_apilar_aumenta_el_tamano`<br>`test_pila.py::test_apilar_acepta_none_y_duplicados`<br>`test_pila.py::test_cima_no_quita_el_elemento` | `estructuras/pila.py` |
 | CA-PIL-02 | `test_pila.py::test_desapilar_en_orden_inverso`<br>`test_pila.py::test_desapilar_reduce_el_tamano` | `estructuras/pila.py` |
 | CA-PIL-03 | `test_pila.py::test_vacia_desapilar_lanza_error`<br>`test_pila.py::test_vacia_cima_lanza_error`<br>`test_pila.py::test_vacia_error_no_cambia_la_pila` | `estructuras/pila.py` |
 | CA-PIL-04 | `test_pila.py::test_pila_nueva_esta_vacia`<br>`test_pila.py::test_pila_nueva_tamano_cero`<br>`test_pila.py::test_vaciar_con_elementos`<br>`test_pila.py::test_vaciar_pila_vacia`<br>`test_pila.py::test_vaciar_permite_reutilizar` | `estructuras/pila.py` |
 | CA-PIL-05 | `test_pila.py::test_desapilar_un_solo_elemento` | `estructuras/pila.py` |
+| CA-PUN-01 | `test_puntajes.py::test_registrar_aparece_en_el_ranking`<br>`test_puntajes.py::test_registrar_varias`<br>`test_puntajes.py::test_registrar_guarda_los_datos` | `dominio/puntajes.py` |
+| CA-PUN-02 | `test_puntajes.py::test_ranking_de_mayor_a_menor`<br>`test_puntajes.py::test_ranking_empate_primero_la_mas_antigua` | `dominio/puntajes.py` |
+| CA-PUN-03 | `test_puntajes.py::test_ranking_vacio` | `dominio/puntajes.py` |
 
 ## De prueba a criterio
 
 | Prueba | Criterios |
 | --- | --- |
+| `test_avl.py::test_insertar_desordenado_queda_ordenado` | CA-AVL-01 |
+| `test_avl.py::test_insertar_un_elemento` | CA-AVL-01 |
+| `test_avl.py::test_insertar_ordenado_mantiene_altura_logaritmica` | CA-AVL-02 |
+| `test_avl.py::test_rotaciones_dejan_el_arbol_balanceado` | CA-AVL-03 |
+| `test_avl.py::test_rotaciones_en_arbol_grande` | CA-AVL-03 |
+| `test_avl.py::test_insertar_clave_existente_reemplaza` | CA-AVL-04 |
+| `test_avl.py::test_insertar_clave_existente_en_arbol_de_uno` | CA-AVL-04 |
+| `test_avl.py::test_insertar_claves_compuestas` | CA-AVL-04 |
+| `test_avl.py::test_maximo` | CA-AVL-05 |
+| `test_avl.py::test_maximo_un_elemento` | CA-AVL-05 |
+| `test_avl.py::test_maximo_vacio_lanza_error` | CA-AVL-05 |
+| `test_avl.py::test_descendente_vacio` | CA-AVL-06 |
+| `test_avl.py::test_altura_vacio` | CA-AVL-06 |
+| `test_avl.py::test_altura_un_elemento` | CA-AVL-06 |
+| `test_avl.py::test_altura_tres_elementos` | CA-AVL-03 |
+| `test_avl.py::test_tamano_vacio` | CA-AVL-06 |
+| `test_avl.py::test_tamano_varios` | CA-AVL-04 |
+| `test_avl.py::test_tamano_un_elemento` | CA-AVL-06 |
+| `test_avl.py::test_esta_vacia_nuevo` | CA-AVL-06 |
+| `test_avl.py::test_esta_vacia_con_elemento` | CA-AVL-06 |
+| `test_avl.py::test_esta_vacia_tras_reemplazar` | CA-AVL-04 |
 | `test_cola.py::test_encolar_uno` | CA-COL-01 |
 | `test_cola.py::test_encolar_varios_conserva_el_frente` | CA-COL-01 |
 | `test_cola.py::test_encolar_repetidos` | CA-COL-01 |
@@ -127,6 +174,18 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | `test_grafo.py::test_siguiente_paso_primer_paso` | CA-GRA-07 |
 | `test_grafo.py::test_siguiente_paso_ya_llego` | CA-GRA-07 |
 | `test_grafo.py::test_siguiente_paso_sin_camino` | CA-GRA-07 |
+| `test_grafo.py::test_a_estrella_misma_longitud_que_bfs` | CA-GRA-08 |
+| `test_grafo.py::test_a_estrella_camino_contiguo_y_transitable` | CA-GRA-08 |
+| `test_grafo.py::test_a_estrella_igual_que_bfs_en_mapas_aleatorios` | CA-GRA-08 |
+| `test_grafo.py::test_a_estrella_explora_menos_en_campo_abierto` | CA-GRA-09 |
+| `test_grafo.py::test_a_estrella_nunca_explora_mas_que_bfs` | CA-GRA-09 |
+| `test_grafo.py::test_a_estrella_sin_camino_explora_igual` | CA-GRA-09 |
+| `test_grafo.py::test_a_estrella_sin_camino` | CA-GRA-10 |
+| `test_grafo.py::test_a_estrella_origen_igual_a_destino` | CA-GRA-10 |
+| `test_grafo.py::test_a_estrella_destino_encerrado` | CA-GRA-10 |
+| `test_grafo.py::test_siguiente_paso_guiado` | CA-GRA-11 |
+| `test_grafo.py::test_siguiente_paso_guiado_sin_camino` | CA-GRA-11 |
+| `test_grafo.py::test_siguiente_paso_guiado_ya_llego` | CA-GRA-11 |
 | `test_historial.py::test_registrar_permite_deshacer` | CA-HIS-03 |
 | `test_historial.py::test_registrar_no_habilita_rehacer` | CA-HIS-03 |
 | `test_historial.py::test_registrar_tras_deshacer_borra_rehacer` | CA-HIS-03 |
@@ -213,6 +272,18 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | `test_main.py::test_comandos_ejercitan_el_juego` | CA-31 |
 | `test_main.py::test_listar_inventario_vacio` | CA-09 |
 | `test_main.py::test_listar_inventario_en_orden` | CA-09 |
+| `test_main.py::test_elegir_nivel_valido` | CA-39 |
+| `test_main.py::test_elegir_nivel_lista_los_tres` | CA-39 |
+| `test_main.py::test_partida_usa_el_nivel_elegido` | CA-39 |
+| `test_main.py::test_elegir_nivel_inexistente` | CA-40 |
+| `test_main.py::test_elegir_nivel_texto` | CA-40 |
+| `test_main.py::test_elegir_nivel_vacio` | CA-40 |
+| `test_main.py::test_puntajes_sin_partidas` | CA-34 |
+| `test_main.py::test_puntajes_de_mayor_a_menor` | CA-34 |
+| `test_main.py::test_registrar_partida_terminada` | CA-33 |
+| `test_main.py::test_no_registrar_partida_en_juego` | CA-33 |
+| `test_main.py::test_comando_comparar` | CA-38 |
+| `test_main.py::test_dibujar_centinela_y_cazador` | CA-31 |
 | `test_matriz.py::test_crear_valor_inicial_en_esquinas` | CA-MAT-01 |
 | `test_matriz.py::test_crear_sin_valor_inicial` | CA-MAT-01 |
 | `test_matriz.py::test_crear_tamano_invalido` | CA-MAT-05 |
@@ -227,6 +298,23 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | `test_matriz.py::test_dimensiones_no_cuadrada` | CA-MAT-06 |
 | `test_matriz.py::test_dimensiones_uno_por_uno` | CA-MAT-06 |
 | `test_matriz.py::test_dimensiones_del_juego` | CA-MAT-06 |
+| `test_monticulo.py::test_insertar_desordenado` | CA-MON-01 |
+| `test_monticulo.py::test_insertar_en_orden_decreciente` | CA-MON-01 |
+| `test_monticulo.py::test_insertar_un_elemento` | CA-MON-01 |
+| `test_monticulo.py::test_empates_en_orden_de_llegada` | CA-MON-02 |
+| `test_monticulo.py::test_empates_mezclados` | CA-MON-02 |
+| `test_monticulo.py::test_prioridades_compuestas` | CA-MON-01 |
+| `test_monticulo.py::test_extraer_vacio_lanza_error` | CA-MON-04 |
+| `test_monticulo.py::test_extraer_hasta_vaciar_y_reutilizar` | CA-MON-05 |
+| `test_monticulo.py::test_minimo_no_quita` | CA-MON-03 |
+| `test_monticulo.py::test_minimo_un_elemento` | CA-MON-03 |
+| `test_monticulo.py::test_minimo_vacio_lanza_error` | CA-MON-04 |
+| `test_monticulo.py::test_tamano_vacio` | CA-MON-05 |
+| `test_monticulo.py::test_tamano_tras_extraer` | CA-MON-05 |
+| `test_monticulo.py::test_tamano_con_repetidos` | CA-MON-05 |
+| `test_monticulo.py::test_esta_vacia_nuevo` | CA-MON-05 |
+| `test_monticulo.py::test_esta_vacia_con_elemento` | CA-MON-05 |
+| `test_monticulo.py::test_esta_vacia_tras_extraer` | CA-MON-05 |
 | `test_partida.py::test_inicio_mapa_y_picos` | CA-01 |
 | `test_partida.py::test_inicio_entidades` | CA-02 |
 | `test_partida.py::test_inicio_contadores` | CA-03 |
@@ -274,6 +362,18 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | `test_partida.py::test_buscar_inexistente` | CA-30 |
 | `test_partida.py::test_nivel_se_puede_ganar_por_el_camino_corto` | CA-26 |
 | `test_partida.py::test_nivel_esperar_lleva_a_la_derrota` | CA-27 |
+| `test_partida.py::test_centinela_aparece_al_recoger_llave` | CA-35 |
+| `test_partida.py::test_centinela_se_mueve_desde_el_turno_siguiente` | CA-35 |
+| `test_partida.py::test_centinela_aparece_una_sola_vez` | CA-35 |
+| `test_partida.py::test_deshacer_recogida_quita_al_centinela` | CA-36 |
+| `test_partida.py::test_rehacer_recogida_devuelve_al_centinela` | CA-36 |
+| `test_partida.py::test_cazador_usa_camino_mas_corto` | CA-37 |
+| `test_partida.py::test_comparar_busquedas_bfs_contra_a_estrella` | CA-38 |
+| `test_partida.py::test_comparar_busquedas_sin_pajaros` | CA-38 |
+| `test_partida.py::test_nivel_2_se_puede_ganar` | CA-39 |
+| `test_partida.py::test_nivel_3_se_puede_ganar` | CA-39 |
+| `test_partida.py::test_niveles_cumplen_los_minimos` | CA-39 |
+| `test_partida.py::test_niveles_esperar_lleva_a_la_derrota` | CA-27 |
 | `test_pila.py::test_pila_nueva_esta_vacia` | CA-PIL-04 |
 | `test_pila.py::test_pila_nueva_tamano_cero` | CA-PIL-04 |
 | `test_pila.py::test_pila_con_elemento_no_esta_vacia` | CA-PIL-01 |
@@ -290,6 +390,12 @@ Generada a partir de los docstrings de `tests/`. CA-33 a CA-40 (Should y Could) 
 | `test_pila.py::test_vaciar_con_elementos` | CA-PIL-04 |
 | `test_pila.py::test_vaciar_pila_vacia` | CA-PIL-04 |
 | `test_pila.py::test_vaciar_permite_reutilizar` | CA-PIL-04 |
+| `test_puntajes.py::test_registrar_aparece_en_el_ranking` | CA-PUN-01 |
+| `test_puntajes.py::test_registrar_varias` | CA-PUN-01 |
+| `test_puntajes.py::test_registrar_guarda_los_datos` | CA-PUN-01 |
+| `test_puntajes.py::test_ranking_de_mayor_a_menor` | CA-PUN-02 |
+| `test_puntajes.py::test_ranking_empate_primero_la_mas_antigua` | CA-PUN-02 |
+| `test_puntajes.py::test_ranking_vacio` | CA-PUN-03 |
 | `test_tabla_hash.py::test_insertar_y_buscar` | CA-HAS-01 |
 | `test_tabla_hash.py::test_insertar_varias_claves` | CA-HAS-01 |
 | `test_tabla_hash.py::test_insertar_clave_existente_reemplaza` | CA-HAS-02 |
