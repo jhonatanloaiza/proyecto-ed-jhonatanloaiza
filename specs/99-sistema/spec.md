@@ -1,4 +1,4 @@
-# Spec del sistema · versión 0.2
+# Spec del sistema · versión 1.0
 
 ## Qué hace el sistema
 
@@ -23,12 +23,12 @@ Escape Geométrico del Sistema Corrupto es un juego por turnos en consola. Un Cu
 | 05 | Eventos | Cola enlazada | Eventos en orden | `estructuras/cola.py`, `dominio/eventos.py` |
 | 06 | Índice | Tabla hash | Búsqueda de entidades | `estructuras/tabla_hash.py` |
 | 07 | Rutas | Grafo implícito + BFS | Ruta de los enemigos | `estructuras/grafo.py` |
-| 08 | Puntajes (Should, Entrega final) | Árbol AVL | Tabla de puntajes | `estructuras/avl.py` |
-| 09 | Búsqueda guiada (Could, Entrega final) | A* con montículo | Ruta del Cazador | `estructuras/monticulo.py` |
+| 08 | Puntajes | Árbol AVL | Tabla de puntajes | `estructuras/avl.py`, `dominio/puntajes.py` |
+| 09 | Búsqueda guiada | Montículo mínimo (frontera de A*) | Ruta del Cazador | `estructuras/monticulo.py`, `estructuras/grafo.py` |
 
 `dominio/partida.py` coordina todos los componentes; `main.py` solo lee comandos y dibuja.
 
-## Cómo encajan los contratos (inicial)
+## Cómo encajan los contratos
 
 - La **Partida** posee el Mapa, el Inventario, los Turnos, la Cola de eventos, el Índice y el Historial.
 - Las **acciones** del jugador modifican Mapa, Inventario y puntaje, y se registran en el **Historial**; al revertirse restauran exactamente lo que cambiaron.
@@ -37,6 +37,10 @@ Escape Geométrico del Sistema Corrupto es un juego por turnos en consola. Un Cu
 - El **Índice** guarda una referencia a cada entidad; como la entidad conserva su propia celda, moverla no obliga a tocar el índice.
 - Una **Accion** es un turno completo (Cubo y Pájaros). El Historial la revierte y la repite sin recalcular rutas.
 - El nivel 1 incluye 1 llave y 1 compuerta opcional para ejercitar `usar` (F-03); el documento de registro lo proponía sin llaves.
+- **Centinela (HU-13):** el plano marca con `S` dónde aparece. Al recoger una llave, un cambio reversible lo inserta en la **lista circular** de turnos y en el **índice**; empieza a moverse en el turno siguiente. Deshacer la recogida lo saca de ambos.
+- **Cazador (HU-14):** se marca con `H` y calcula su paso con A* (montículo) en lugar de BFS. El comando `c` muestra, para cada Pájaro, cuántas celdas explorarían BFS y A* hacia el Cubo.
+- **Puntajes (HU-12):** al salir o reiniciar una partida terminada, `main.py` la registra en la `TablaPuntajes` (AVL). Los puntajes viven mientras el programa está abierto; guardarlos en archivo es Won't.
+- **Niveles (HU-15):** `dominio/niveles.py` define Sector de Arranque, Memoria Fragmentada y Núcleo Corrupto; el menú pide el número de nivel.
 
 ## Historial de cambios
 
@@ -44,3 +48,4 @@ Escape Geométrico del Sistema Corrupto es un juego por turnos en consola. Un Cu
 | --- | --- | --- |
 | 0.1 | 2026-10-14 | Versión inicial para la Entrega 1. |
 | 0.2 | 2026-10-30 | Numeración alineada con las carpetas de `specs/`; contratos de índice y acción actualizados; nivel 1 con llave y compuerta para ejercitar `usar`. |
+| 1.0 | 2026-11-13 | Componentes 08 y 09; contratos de Centinela, Cazador, puntajes y niveles. |
