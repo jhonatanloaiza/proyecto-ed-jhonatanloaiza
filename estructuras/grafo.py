@@ -1,10 +1,11 @@
-"""Grafo implícito sobre una rejilla, con búsqueda en anchura (BFS)."""
+"""Grafo implícito sobre una rejilla, con búsqueda en anchura (BFS) y A*."""
 
 from dataclasses import dataclass
 
 from estructuras.cola import Cola
 from estructuras.lista_enlazada import ListaEnlazada
 from estructuras.matriz import Matriz
+from estructuras.monticulo import MonticuloMinimo
 from estructuras.pila import Pila
 
 DIRECCIONES = ((-1, 0), (1, 0), (0, -1), (0, 1))  # arriba, abajo, izquierda, derecha
@@ -16,6 +17,11 @@ class Busqueda:
 
     camino: ListaEnlazada
     explorados: int
+
+
+def manhattan(a, b):
+    """Distancia Manhattan entre dos celdas: heurística admisible para 4 direcciones. O(1)."""
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
 class GrafoRejilla:
@@ -54,9 +60,39 @@ class GrafoRejilla:
                     frontera.encolar(vecino)
         return Busqueda(ListaEnlazada(), explorados)
 
-    def siguiente_paso(self, origen, destino):
-        """Devuelve la primera celda del camino, o None si no hay camino o ya llegó. O(V + E)."""
-        camino = self.bfs(origen, destino).camino
+    def a_estrella(self, origen, destino):
+        """Busca el camino de menos pasos guiado por la distancia Manhattan. O(E log V)."""
+        costos = Matriz(self._filas, self._columnas)
+        previos = Matriz(self._filas, self._columnas)
+        cerradas = Matriz(self._filas, self._columnas, False)
+        costos.asignar(*origen, 0)
+        previos.asignar(*origen, origen)
+        abiertas = MonticuloMinimo()
+        estimado = manhattan(origen, destino)
+        abiertas.insertar((estimado, estimado), origen)
+        explorados = 0
+        while not abiertas.esta_vacia():
+            celda = abiertas.extraer_minimo()
+            if cerradas.consultar(*celda):
+                continue  # entrada vieja: la celda ya se cerró con un costo menor
+            cerradas.asignar(*celda, True)
+            explorados += 1
+            if celda == destino:
+                return Busqueda(self._reconstruir(previos, origen, destino), explorados)
+            costo_vecino = costos.consultar(*celda) + 1
+            for vecino in self.vecinos(celda):
+                anterior = costos.consultar(*vecino)
+                if not cerradas.consultar(*vecino) and (anterior is None or costo_vecino < anterior):
+                    costos.asignar(*vecino, costo_vecino)
+                    previos.asignar(*vecino, celda)
+                    restante = manhattan(vecino, destino)
+                    abiertas.insertar((costo_vecino + restante, restante), vecino)
+        return Busqueda(ListaEnlazada(), explorados)
+
+    def siguiente_paso(self, origen, destino, guiado=False):
+        """Devuelve la primera celda del camino (de A* si guiado), o None si no hay camino o ya llegó."""
+        busqueda = self.a_estrella(origen, destino) if guiado else self.bfs(origen, destino)
+        camino = busqueda.camino
         if camino.tamano() < 2:
             return None
         pasos = iter(camino)
