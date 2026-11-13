@@ -1,8 +1,8 @@
 """Pruebas de integración de la Partida contra los criterios de las historias Must."""
 
-from dominio.entidades import RASTREADOR
+from dominio.entidades import CAZADOR, CENTINELA, RASTREADOR
 from dominio.mapa import COMPUERTA, LIBRE, PICO, PORTAL
-from dominio.niveles import SECTOR_DE_ARRANQUE
+from dominio.niveles import MEMORIA_FRAGMENTADA, NIVELES, NUCLEO_CORRUPTO, SECTOR_DE_ARRANQUE
 from dominio.partida import ABAJO, ARRIBA, DERECHA, DERROTA, EN_JUEGO, IZQUIERDA, PARTIDA_TERMINADA, VICTORIA, Partida
 
 # El Rastreador queda encerrado detrás de picos: no interfiere con el Cubo.
@@ -392,7 +392,7 @@ def test_buscar_inexistente():
 def test_nivel_se_puede_ganar_por_el_camino_corto():
     """CA-26: el nivel del juego se gana yendo directo al portal sin ser atrapado."""
     partida = Partida(SECTOR_DE_ARRANQUE)
-    camino = list(partida._grafo.bfs(partida.cubo.celda, (19, 19)).camino)
+    camino = list(partida.grafo.bfs(partida.cubo.celda, (19, 19)).camino)
     for desde, hasta in zip(camino, camino[1:]):
         partida.mover((hasta[0] - desde[0], hasta[1] - desde[1]))
     assert partida.estado == VICTORIA
@@ -404,3 +404,124 @@ def test_nivel_esperar_lleva_a_la_derrota():
     for _ in range(40):
         partida.esperar()
     assert partida.estado == DERROTA
+
+
+# --- Entrega final: Centinela, Cazador y niveles ---
+
+CON_CENTINELA = (
+    "Ck.....S",
+    "^^^^^^^^",
+    "R......@",
+)
+
+
+def test_centinela_aparece_al_recoger_llave():
+    """CA-35: recoger una llave genera un evento de aparición y el Centinela entra al orden de turnos."""
+    partida = Partida(CON_CENTINELA)
+    partida.drenar_eventos()
+    assert partida.buscar("S1") == "No existe S1."
+    partida.mover(DERECHA)
+    assert partida.enemigos.tamano() == 2 and partida.buscar("S1") == f"S1: {CENTINELA}, en (0, 7)."
+    assert "[T1] Aparece S1 en (0, 7)" in list(partida.drenar_eventos())
+
+
+def test_centinela_se_mueve_desde_el_turno_siguiente():
+    """CA-35: el Centinela no se mueve en el turno en que aparece, sí en el siguiente."""
+    partida = Partida(CON_CENTINELA)
+    partida.mover(DERECHA)
+    assert posicion(partida, "S1") == (0, 7)
+    partida.esperar()
+    assert posicion(partida, "S1") == (0, 6)
+
+
+def test_centinela_aparece_una_sola_vez():
+    """CA-35: soltar y recoger otra vez la llave no crea un segundo Centinela."""
+    partida = Partida(CON_CENTINELA)
+    partida.mover(DERECHA)
+    partida.mover(DERECHA)
+    partida.soltar("K1")
+    partida.mover(IZQUIERDA)
+    partida.mover(DERECHA)
+    assert partida.enemigos.tamano() == 2
+
+
+def test_deshacer_recogida_quita_al_centinela():
+    """CA-36: deshacer la recogida de la llave saca al Centinela del mapa, del índice y del orden de turnos."""
+    partida = Partida(CON_CENTINELA)
+    partida.mover(DERECHA)
+    partida.deshacer()
+    assert partida.enemigos.tamano() == 1 and partida.buscar("S1") == "No existe S1."
+    assert not partida.hay_pajaro_en((0, 7))
+
+
+def test_rehacer_recogida_devuelve_al_centinela():
+    """CA-36: rehacer la recogida vuelve a poner al Centinela en el orden de turnos."""
+    partida = Partida(CON_CENTINELA)
+    partida.mover(DERECHA)
+    partida.deshacer()
+    partida.rehacer()
+    assert partida.enemigos.tamano() == 2 and posicion(partida, "S1") == (0, 7)
+
+
+def test_cazador_usa_camino_mas_corto():
+    """CA-37: el Cazador avanza por un camino de la misma longitud que el de menos pasos."""
+    partida = Partida(("C....", ".^^^.", ".^...", "....H"))
+    antes = partida.grafo.bfs(posicion(partida, "H1"), partida.cubo.celda).camino.tamano()
+    partida.esperar()
+    despues = partida.grafo.bfs(posicion(partida, "H1"), partida.cubo.celda).camino.tamano()
+    assert partida.buscar("H1").startswith(f"H1: {CAZADOR}") and despues == antes - 1
+
+
+def test_comparar_busquedas_bfs_contra_a_estrella():
+    """CA-38: en el mismo mapa se muestra cuántas celdas exploran BFS y A* para cada Pájaro."""
+    filas = list(Partida(NUCLEO_CORRUPTO).comparar_busquedas())
+    assert [fila[0] for fila in filas] == ["R1", "H1", "R2"]
+    assert all(guiada <= bfs for _, _, bfs, guiada in filas)
+
+
+def test_comparar_busquedas_sin_pajaros():
+    """CA-38: sin Pájaros activos la comparación está vacía."""
+    assert Partida(("C@",)).comparar_busquedas().esta_vacia()
+
+
+def jugar_ruta(plano, etapas):
+    partida = Partida(plano)
+    for tipo, dato in etapas:
+        if tipo == "usar":
+            partida.usar(dato)
+            continue
+        while partida.estado == EN_JUEGO and partida.cubo.celda != dato:
+            camino = list(partida.grafo.bfs(partida.cubo.celda, dato).camino)
+            partida.mover((camino[1][0] - camino[0][0], camino[1][1] - camino[0][1]))
+    return partida
+
+
+def test_nivel_2_se_puede_ganar():
+    """CA-39: Memoria Fragmentada se gana tomando la llave y abriendo la compuerta del portal."""
+    etapas = [("ir", (10, 9)), ("ir", (14, 17)), ("usar", "K1"), ("ir", (19, 19))]
+    assert jugar_ruta(MEMORIA_FRAGMENTADA, etapas).estado == VICTORIA
+
+
+def test_nivel_3_se_puede_ganar():
+    """CA-39: Núcleo Corrupto se gana abriendo sus dos compuertas."""
+    etapas = [("ir", (8, 6)), ("ir", (9, 9)), ("usar", "K1"), ("ir", (12, 14)), ("ir", (14, 17)),
+              ("usar", "K2"), ("ir", (19, 19))]
+    assert jugar_ruta(NUCLEO_CORRUPTO, etapas).estado == VICTORIA
+
+
+def test_niveles_cumplen_los_minimos():
+    """CA-39: cada nivel mide 20 × 20, tiene máximo 25 % de picos, un Cubo, un portal y al menos 2 Pájaros."""
+    for _, plano in NIVELES:
+        partida = Partida(plano)
+        assert partida.mapa.filas() == 20 and partida.mapa.columnas() == 20
+        assert partida.mapa.proporcion_picos() <= 0.25
+        assert partida.cubo is not None and partida.enemigos.tamano() >= 2
+
+
+def test_niveles_esperar_lleva_a_la_derrota():
+    """CA-27: en todos los niveles, quedarse quieto termina en derrota."""
+    for _, plano in NIVELES:
+        partida = Partida(plano)
+        for _ in range(60):
+            partida.esperar()
+        assert partida.estado == DERROTA
